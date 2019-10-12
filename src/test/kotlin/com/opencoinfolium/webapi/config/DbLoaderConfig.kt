@@ -9,6 +9,11 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 import javax.sql.DataSource
 
+/**
+ * Config class that creates and wires a {@link DbLoader}
+ *
+ * @author christian@laboranowitsch.de
+ */
 @Configuration
 @Profile(RunProfile.INT_TEST)
 class DbLoaderConfig {
