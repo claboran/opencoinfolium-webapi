@@ -44,7 +44,7 @@ class CoinDataRepoTests {
                 circulatingSupply = 3
         ))
         assertThat(coinDataRepo
-                .findById(1).id)
+                .findById(1)!!.id)
                 .`as`("read it back")
                 .isEqualTo(1)
 
@@ -58,16 +58,17 @@ class CoinDataRepoTests {
                 circulatingSupply = 3
         ))
         assertThat(coinDataRepo
-                .findById(2).id)
+                .findById(2)!!.id)
                 .`as`("read back with null")
                 .isEqualTo(2)
 
     }
 
-    @Test(expected = EmptyResultDataAccessException::class)
+    @Test
     fun `Assert that an exception is thrown in case of an item not found`() {
-        coinDataRepo
-                .findById(1)
+        assertThat(coinDataRepo
+                .findById(1))
+                .`as`("is null").isNull()
     }
 
     @Test
@@ -84,7 +85,7 @@ class CoinDataRepoTests {
         coinDataRepo.update(id = 1, url = "/myurl")
 
         assertThat(coinDataRepo
-                .findById(1).url)
+                .findById(1)!!.url)
                 .`as`("read back and check url")
                 .isEqualTo("/myurl")
 

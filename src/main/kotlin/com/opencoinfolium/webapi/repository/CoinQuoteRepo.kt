@@ -82,7 +82,7 @@ class CoinQuoteRepo @Autowired constructor(
                     percentageChange24h = r.getDouble(PERCENTAGE_CHANGE_24H_PARAM),
                     percentageChange7d = r.getDouble(PERCENTAGE_CHANGE_7D_PARAM)
             )
-        }!!.also { logger().info(it.toString()) }
+        }!! .also { logger().info(it.toString()) }
     }
 
 }
