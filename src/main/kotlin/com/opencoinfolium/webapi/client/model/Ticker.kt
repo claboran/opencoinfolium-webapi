@@ -22,7 +22,7 @@ data class CurrencyItem(
     var USD: QuoteItem
 )
 
-data class QuoteItems(
+data class CoinItem(
         var id: Long,
         var name: String,
         var symbol: String,
@@ -41,6 +41,6 @@ data class MetaData (
 )
 
 data class Ticker(
-        var data: List<QuoteItems>,
+        var data: List<CoinItem>,
         var metadata: MetaData
 )

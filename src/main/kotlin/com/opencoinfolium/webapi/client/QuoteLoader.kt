@@ -3,7 +3,7 @@ package com.opencoinfolium.webapi.client
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.opencoinfolium.webapi.client.model.QuoteItems
+import com.opencoinfolium.webapi.client.model.CoinItem
 import com.opencoinfolium.webapi.client.model.Ticker
 import com.opencoinfolium.webapi.loggingutils.LoggingAware
 import com.opencoinfolium.webapi.loggingutils.logger
@@ -18,7 +18,7 @@ fun convertFromJson(jsonData: String): Ticker = ObjectMapper()
         .readValue(jsonData)
 
 interface IQuoteLoader {
-    fun loadQuotes(): List<QuoteItems>
+    fun loadQuotes(): List<CoinItem>
 }
 
 @Component
@@ -27,7 +27,7 @@ class QuoteLoader @Autowired constructor(
         @Value("\${importer.client.tickerurl}") val tickerUrl: String
 ): IQuoteLoader, LoggingAware{
 
-    override fun loadQuotes(): List<QuoteItems> =
+    override fun loadQuotes(): List<CoinItem> =
         convertFromJson(restTemplate
                 .exchange(
                         tickerUrl,
