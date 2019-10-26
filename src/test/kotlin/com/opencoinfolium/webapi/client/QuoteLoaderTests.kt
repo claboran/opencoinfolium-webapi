@@ -2,7 +2,7 @@ package com.opencoinfolium.webapi.client
 
 import com.opencoinfolium.webapi.client.model.CurrencyItem
 import com.opencoinfolium.webapi.client.model.QuoteItem
-import com.opencoinfolium.webapi.client.model.QuoteItems
+import com.opencoinfolium.webapi.client.model.CoinItem
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -74,7 +74,7 @@ class QuoteLoaderTests {
                 "}" +
                 "}"
 
-        val testCoin = QuoteItems(
+        val testCoin = CoinItem(
                 id= 1,
                 name = "Bitcoin",
                 symbol = "BTC",

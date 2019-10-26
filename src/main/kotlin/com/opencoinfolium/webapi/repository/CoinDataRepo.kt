@@ -12,7 +12,7 @@ import java.sql.ResultSet
 import javax.sql.DataSource
 
 interface ICoinDataRepo {
-    fun findById(id: Long): CoinData
+    fun findById(id: Long): CoinData?
     fun findAll(): List<CoinData>
     fun save(coinData: CoinData)
     fun update(id: Long, url: String)
@@ -59,11 +59,11 @@ class CoinDataRepo @Autowired constructor(
     val updateStmt = "update $tblName set $URL_PARAM = :$URL_PARAM where $ID_PARAM = :$ID_PARAM"
 
 
-    override fun findById(id: Long): CoinData {
+    override fun findById(id: Long): CoinData? {
         val paramSource = MapSqlParameterSource()
         paramSource.addValue(ID_PARAM, id)
-        return jdbcTemplate.queryForObject(findByIdQueryStmt, paramSource, queryResultMapper)!!
-                .also { logger().info(it.toString()) }
+        val res = jdbcTemplate.query(findByIdQueryStmt, paramSource, queryResultMapper)
+        return if (res.size > 0) res[0].also { logger().info(it.toString()) } else null
     }
 
     override fun findAll(): List<CoinData> {
