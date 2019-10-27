@@ -3,25 +3,28 @@ package com.opencoinfolium.webapi.repository
 import com.opencoinfolium.webapi.entity.CoinData
 import com.opencoinfolium.webapi.testutils.DbLoader
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Before
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.dao.EmptyResultDataAccessException
-import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.test.context.junit.jupiter.SpringExtension
 
-@RunWith(SpringRunner::class)
+/**
+ * Tests loading of quotes and proper deserialization of {@link QuotesItem}.
+ *
+ * @author christian@laboranowitsch.de
+ *
+ */
+@ExtendWith(SpringExtension::class)
 @SpringBootTest
-class CoinDataRepoTests {
+class CoinDataRepoTests @Autowired constructor(
+        val dbLoader: DbLoader,
+        val coinDataRepo: ICoinDataRepo
+) {
 
-    @Autowired
-    lateinit var dbLoader: DbLoader
 
-    @Autowired
-    lateinit var coinDataRepo: ICoinDataRepo
-
-    @Before
+    @BeforeEach
     fun contextLoads() {
         dbLoader.prepareDatabase()
     }
@@ -33,7 +36,7 @@ class CoinDataRepoTests {
     }
 
     @Test
-    fun `Assert that an item can be stored and read`() {
+    fun `Assert that an item can be stored and read back`() {
         coinDataRepo.save(CoinData(
                 id = 1,
                 slug = "slug",
@@ -65,14 +68,14 @@ class CoinDataRepoTests {
     }
 
     @Test
-    fun `Assert that an exception is thrown in case of an item not found`() {
+    fun `Assert that result is null when item is not present`() {
         assertThat(coinDataRepo
                 .findById(1))
                 .`as`("is null").isNull()
     }
 
     @Test
-    fun `Assert that the update operation could be performed`() {
+    fun `Assert that the we can update the url`() {
         coinDataRepo.save(CoinData(
                 id = 1,
                 slug = "slug",

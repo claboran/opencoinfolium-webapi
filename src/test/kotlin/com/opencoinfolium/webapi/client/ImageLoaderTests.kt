@@ -1,11 +1,11 @@
 package com.opencoinfolium.webapi.client
 
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -18,12 +18,10 @@ import kotlin.streams.toList
  *
  */
 
-@RunWith(SpringRunner::class)
+@ExtendWith(SpringExtension::class)
 @SpringBootTest
-class ImageLoaderTests {
+class ImageLoaderTests @Autowired constructor(val imageLoader: ImageLoader) {
 
-    @Autowired
-    lateinit var imageLoader: ImageLoader
 
     @Test
     fun `Assert that the context has been wired`() {
@@ -31,7 +29,7 @@ class ImageLoaderTests {
     }
 
     @Test
-    fun `Assert that we can properly load an image`() {
+    fun `Assert that we can load an image`() {
         File("./src/test/test-images").also { file -> file.mkdirs() }
 
         imageLoader.getCoinImage("ethereum-classic.png")

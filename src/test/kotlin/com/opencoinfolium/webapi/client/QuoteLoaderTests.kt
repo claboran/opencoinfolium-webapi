@@ -1,14 +1,14 @@
 package com.opencoinfolium.webapi.client
 
+import com.opencoinfolium.webapi.client.model.CoinItem
 import com.opencoinfolium.webapi.client.model.CurrencyItem
 import com.opencoinfolium.webapi.client.model.QuoteItem
-import com.opencoinfolium.webapi.client.model.CoinItem
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.test.context.junit.jupiter.SpringExtension
 
 /**
  * Tests loading of quotes and proper deserialization of {@link QuotesItem}.
@@ -16,10 +16,9 @@ import org.springframework.test.context.junit4.SpringRunner
  * @author christian@laboranowitsch.de
  *
  */
-
-@RunWith(SpringRunner::class)
+@ExtendWith(SpringExtension::class)
 @SpringBootTest
-class QuoteLoaderTests {
+class QuoteLoaderTests @Autowired constructor(val quoteLoader: QuoteLoader) {
 
     companion object {
         const val testJsonData = "{\n" +
@@ -96,8 +95,6 @@ class QuoteLoaderTests {
                 )
         )
     }
-    @Autowired
-    lateinit var quoteLoader: QuoteLoader;
 
     @Test
     fun `Assert that the context has been wired`() {
@@ -107,11 +104,14 @@ class QuoteLoaderTests {
 
     @Test
     fun `Assert that we receive quote data and we have a quote for BitCoin`() {
-        val quotes = quoteLoader.loadQuotes()
-        quotes.filter { it.id == 1L }
-        assertThat(quotes.filter { it.id == 1L }[0].name)
+        with(quoteLoader.loadQuotes().filter { it.id == 1L }[0]) {
+            assertThat(name)
                 .`as`("has an coin item with id = 1 and name = Bitcoin")
                 .isEqualTo("Bitcoin")
+            assertThat(symbol)
+                    .`as`("has an coin item with id = 1 and symbol = BTC")
+                    .isEqualTo("BTC")
+        }
 
     }
 

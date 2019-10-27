@@ -3,35 +3,29 @@ package com.opencoinfolium.webapi.service
 import com.opencoinfolium.webapi.loggingutils.LoggingAware
 import com.opencoinfolium.webapi.loggingutils.logger
 import com.opencoinfolium.webapi.repository.CoinDataRepo
-import com.opencoinfolium.webapi.repository.CoinQuoteRepo
 import com.opencoinfolium.webapi.testutils.DbLoader
-import org.assertj.core.api.Assertions
-import org.assertj.core.api.Assertions.*
-import org.junit.Before
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.test.context.junit.jupiter.SpringExtension
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
 import kotlin.streams.toList
 
-@RunWith(SpringRunner::class)
+@ExtendWith(SpringExtension::class)
 @SpringBootTest
-class CoinQuotesImporterTests : LoggingAware {
+class CoinQuotesImporterTests @Autowired constructor(
+        val dbLoader: DbLoader,
+        val coinQuotesImporter: CoinQuotesImporter,
+        val coinDataRepo: CoinDataRepo
+) : LoggingAware {
 
-    @Autowired
-    lateinit var dbLoader: DbLoader
 
-    @Autowired
-    lateinit var coinQuotesImporter: CoinQuotesImporter
-
-    @Autowired
-    lateinit var coinDataRepo: CoinDataRepo
-
-    @Before
+    @BeforeEach
     fun contextLoads() {
         dbLoader.prepareDatabase()
     }
