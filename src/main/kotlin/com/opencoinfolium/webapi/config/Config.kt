@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate
 
 
 @Configuration
-@Profile(value = [RunProfile.INT_TEST, RunProfile.LOCAL_DEV])
+@Profile(value = [RunProfile.INT_TEST, RunProfile.LOCAL_DEV, RunProfile.LOCAL_DEV_H2])
 class Config {
 
     @Bean
